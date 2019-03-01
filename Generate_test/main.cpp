@@ -55,7 +55,7 @@ int main(int argc, char *argv[])
         cout << "\nОшибка при записи тестовых данных\n";
 
     if(write_test_txt(path, X, Y, cnt, a, b)){
-        cout << "\nЧто бы ознакомится с результатами генерации пройдите по пути: \"" << path << "testData.txt";
+        cout << "\nЧто бы ознакомится с результатами генерации пройдите по пути: \"" << path << "testData.txt\n";
     }
     else
         cout << "\nОшибка при записи тестовых данных\n";
@@ -112,7 +112,7 @@ bool write_test_txt(const char* path, const float* X,const  float* Y,const  int 
     oFile << "Число элементов: " << count << "\n" ;
     oFile << "X = {";
     for (int i = 0; i < count;i++) {
-        if(i == 0)
+        if(i == count-1)
             oFile << X[i] << "}\n";
         else
             oFile << X[i] <<",\t";
@@ -120,12 +120,14 @@ bool write_test_txt(const char* path, const float* X,const  float* Y,const  int 
     oFile << "Y = {";
 
     for (int i = 0; i < count;i++) {
-        if(i == 0)
+        if(i == count-1)
             oFile << Y[i] << "}\n";
         else
             oFile << Y[i] <<",\t";
     }
     oFile << "\na = " << a << "\nb = " << b;
+    oFile.close();
+    return true;
 }
 
 char* getStartPath(char* argv_0){
