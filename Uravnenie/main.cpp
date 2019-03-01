@@ -1,5 +1,6 @@
 #include <iostream>
 #include <fstream>
+#include <clocale>
 
 using namespace std;
 
@@ -10,23 +11,24 @@ float sum_qrt(const float* mas, const int mas_count);
 float find_a(const float* masX, const float* masY, const int mas_count);
 float find_b(const float* masX, const float* masY, const int mas_count);
 
-bool readData(string path, float* X, float* Y, int* mas_count);
+
+bool readData(string path, float*& X, float*& Y, int* mas_count);
 
 
 
 int main()
 {
+    setlocale(LC_ALL, "rus");
     int mas_count = 0;
-    float* X;
-    float* Y;
+    float* X = nullptr;
+    float* Y = nullptr;
     string path;
 
 
-    cout << "Write path to test data: ";
+    cout << "Введите путь до файла с тестовыми данными: ";
     cin >> path;
-
     if(!readData(path,X,Y,&mas_count)){
-        cout << "Some error...";
+        cout << "Ошибка при чтении";
         getchar();
         return 1;
     }
@@ -37,7 +39,7 @@ int main()
         if(i == 0)
             cout << X[i] << "}\n";
         else
-            cout << X[i] <<", ";
+            cout << X[i] <<",\t";
     }
     cout << "Y = {";
 
@@ -45,7 +47,7 @@ int main()
         if(i == 0)
             cout << Y[i] << "}\n";
         else
-            cout << Y[i] <<", ";
+            cout << Y[i] <<",\t";
     }
 
     cout << "a = " << find_a(X, Y, mas_count) << "\n";
@@ -93,28 +95,26 @@ float find_b(const float* masX, const float* masY, const int mas_count){
     return (sum(masX, mas_count)*sum_ad(masX, masY, mas_count) - sum_qrt(masX, mas_count)*sum(masY, mas_count))/(quart(sum(masX, mas_count))-mas_count * sum_qrt(masX, mas_count));
 }
 
-
-
-bool readData(string path, float* X, float* Y, int* mas_count){
+bool getCountMas(string path, int* mas_count){
     ifstream iFile;
     iFile.open(path, ios_base::in);
     if(!iFile.is_open())
         return false;
     iFile.read((char*)mas_count,sizeof (int));
+    iFile.close();
+    return true;
+}
+
+bool readData(string path, float*& X, float*& Y, int *mas_count){
+    ifstream iFile;
+    iFile.open(path, ios_base::in);
+    if(!iFile.is_open())
+        return false;
+    iFile.read((char*)mas_count, sizeof (int));
     X = new float[*mas_count];
     Y = new float[*mas_count];
-    for (int i = *mas_count-1; i >= 0;i--) {
-        if(!iFile.eof())
-            iFile.read((char*)&X[i],sizeof (float));
-        else
-            return false;
-    }
-    for (int i = *mas_count-1; i >= 0;i--) {
-        if(!iFile.eof())
-            iFile.read((char*)&Y[i],sizeof (float));
-        else
-            return false;
-    }
+    iFile.read((char*)X, sizeof(float)*(*mas_count));
+    iFile.read((char*)Y, sizeof(float)*(*mas_count));
     iFile.close();
     return true;
 }
