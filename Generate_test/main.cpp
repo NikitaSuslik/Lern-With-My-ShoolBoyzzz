@@ -54,6 +54,7 @@ int main(int argc, char *argv[])
     }
     else
         cout << "\nОшибка при записи тестовых данных\n";
+    getchar();
     return 0;
 }
 

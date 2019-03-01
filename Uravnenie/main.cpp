@@ -51,7 +51,7 @@ int main(int argc, char *argv[])
 
     cout << "a = " << find_a(X, Y, mas_count) << "\n";  //Вывод а
     cout << "b = " << find_b(X, Y, mas_count) << "\n";  //Вывод b
-
+    getchar();
     return 0;
 }
 
