@@ -48,19 +48,12 @@ int main(int argc, char *argv[])
     float* X = genX(cnt);                   //генерируем Х
     float* Y = genY(a,b, X, cnt);           //генерируем У
 
-    if(write_test(path, X, Y, cnt)){
+    if(write_test(path, X, Y, cnt) && write_test_txt(path, X, Y, cnt, a, b)){
         cout << "\nГенерация прошла успешно\n";
-    }
-    else
-        cout << "\nОшибка при записи тестовых данных\n";
-
-    if(write_test_txt(path, X, Y, cnt, a, b)){
         cout << "\nЧто бы ознакомится с результатами генерации пройдите по пути: \"" << path << "testData.txt\n";
     }
     else
         cout << "\nОшибка при записи тестовых данных\n";
-
-
     return 0;
 }
 
