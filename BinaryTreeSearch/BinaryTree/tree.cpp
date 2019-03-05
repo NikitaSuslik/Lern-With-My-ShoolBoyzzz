@@ -1,7 +1,7 @@
 #include "tree.h"
 
 
-void push(int key, node *parent)
+void tree::push(int key, node *parent)
 {
     if(key >= parent->key){
         if(parent->right){
@@ -23,7 +23,7 @@ void push(int key, node *parent)
     }
 }
 
-void push(int key)
+void tree::push(int key)
 {
     if(root){
         push(key, root);
@@ -34,7 +34,7 @@ void push(int key)
     }
 }
 
-void print(node *parent)
+void tree::print(node *parent)
 {
     if(parent->left)
         print(parent->left);
@@ -46,12 +46,12 @@ void print(node *parent)
 
 }
 
-void print()
+void tree::print()
 {
     print(root);
 }
 
-node *search(int key)
+node* tree::search(int key)
 {
     if(root){
         return search(key, root);
@@ -62,7 +62,7 @@ node *search(int key)
     }
 }
 
-node* search(int key, node* parent){
+node* tree::search(int key, node* parent){
     if(key > parent->key){
         if(parent->right){
             return search(key, parent->right);
@@ -82,4 +82,38 @@ node* search(int key, node* parent){
             return nullptr;
         }
     }
+}
+
+void tree::copy(node *second, node *first)
+{
+    if(first->left){
+        second->left = new node();
+        second->left->key = first->left->key;
+        copy(second->left, first->left);
+    }
+    if(first->right){
+        second->right = new node();
+        second->right->key = first->right->key;
+        copy(second->right, first->right);
+    }
+}
+
+tree::tree(){
+    root = nullptr;
+}
+
+tree::tree(tree &t1)
+{
+    if(t1.root){
+        this->root = new node();
+        this->root->key = t1.root->key;
+        copy(this->root, t1.root);
+    }
+
+}
+
+node::node(){
+    left = nullptr;
+    right = nullptr;
+    key = 0;
 }
