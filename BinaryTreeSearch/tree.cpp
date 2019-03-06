@@ -9,6 +9,7 @@ void tree::push(int key, node *parent)
         }
         else{
             parent->right = new node();
+            parent->right->parent = parent;
             parent->right->key = key;
         }
     }
@@ -18,6 +19,7 @@ void tree::push(int key, node *parent)
         }
         else {
             parent->left = new node();
+            parent->left->parent = parent;
             parent->left->key = key;
         }
     }
@@ -89,13 +91,79 @@ void tree::copy(node *second, node *first)
     if(first->left){
         second->left = new node();
         second->left->key = first->left->key;
+        second->left->parent = second;
         copy(second->left, first->left);
     }
     if(first->right){
         second->right = new node();
         second->right->key = first->right->key;
+        second->right->parent = second;
         copy(second->right, first->right);
     }
+}
+
+bool tree::remove(int key)
+{
+    node* findNode = search(key);
+    node* parent = findNode->parent;
+    if(!findNode) return false;
+    if(!findNode->left && !findNode->right){
+        if(findNode->key >= parent->key){
+            parent->right = nullptr;
+        }
+        else{
+            parent->left = nullptr;
+        }
+    }
+    else if (findNode->right && !findNode->left) {
+        node* tmp_Right = findNode->right;
+        if(findNode->key >= parent->key){
+            parent->right = tmp_Right;
+        }
+        else {
+            parent->left = tmp_Right;
+        }
+    }
+    else if (!findNode->right && findNode->left) {
+        node* tmp_Left = findNode->left;
+        if(findNode->key >= parent->key){
+            parent->right = tmp_Left;
+        }
+        else {
+            parent->left = tmp_Left;
+        }
+    }
+    else{
+        node* tmp;
+        if(findNode->key >= parent->key){
+            tmp = findNode->left->right;
+            parent->right = findNode->left;
+            findNode->left->right = findNode->right;
+            if(tmp)
+                move(tmp);
+        }
+        else {
+            tmp = findNode->right->left;
+            parent->left = findNode->right;
+            findNode->right->left = findNode->left;
+            if(tmp)
+                move(tmp);
+        }
+    }
+    delete findNode;
+    return true;
+}
+
+void tree::move(node *start)
+{
+    if(start->left){
+        move(start->left);
+    }
+    if(start->right){
+        move(start->right);
+    }
+    push(start->key);
+    delete start;
 }
 
 tree::tree(){

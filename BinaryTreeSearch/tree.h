@@ -8,6 +8,7 @@ public:
     int key;
     node* left;
     node* right;
+    node* parent;
 };
 using namespace std;
 class tree{
@@ -24,6 +25,8 @@ public:
     node* search(int key);
     node* search(int key, node* );
     void copy(node* second, node* first);
+    bool remove(int key);
+    void move(node* start);
 };
 
 

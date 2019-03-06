@@ -15,6 +15,9 @@ int main()
     myTree.push(2);
     myTree.push(17);
     myTree.push(13);
+    myTree.push(8);
+    myTree.push(7);
+    myTree.push(9);
     cout << "\nFirst tree\n";
     myTree.print();
     tree secondtree = myTree;
@@ -27,6 +30,11 @@ int main()
     else {
         cout << "\nНайденный ключ " << find->key << "\n";
     }
+
+    myTree.remove(5);
+
+    cout << "\nFirst tree\n";
+    myTree.print();
 
     return 0;
 }
